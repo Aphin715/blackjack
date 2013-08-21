@@ -30,12 +30,12 @@ def initialize
 end
 
 #  Player gets two random cards and is then able to hit or stand
-def deal (player)
+def deal(player)
   player.hand << @deck.pop
 end
 
-def initial_deal (player)
-  2.times {deal (player)}
+def initial_deal(player)
+  2.times {deal(player)}
   puts player.hand
 end
 
@@ -55,4 +55,4 @@ end
 end
 
 game = Blackjack.new
-game.initial_deal (game.player)
+game.initial_deal(game.player)
