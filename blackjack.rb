@@ -90,8 +90,6 @@ end
 # Player's score is shown before each hit or stand
 
 
-# A hit increases his card value
-
 
 #
 
