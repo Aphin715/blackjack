@@ -86,11 +86,6 @@ def display_score(player)
     deal(player)
   end
 end
-
-
-
-
-
 end
 
 game = Blackjack.new
