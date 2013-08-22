@@ -32,11 +32,13 @@ end
 #  Player gets two random cards and is then able to hit or stand
 def deal(player)
   player.hand << @deck.pop
+  puts "#{player.class} was dealt #{player.hand.last}"
+  display_score(player)
 end
 
 def initial_deal(player)
   2.times {deal(player)}
-  puts player.hand
+
 end
 
 def prompt
@@ -59,7 +61,6 @@ end
 
 def hit(player)
   deal(player)
-  display_score(player)
 end
 
 def display_score(player)
@@ -77,23 +78,15 @@ def display_score(player)
       end
     end
   end
-  if score > 21
-    puts "BUST! YOU'RE A LOSER"
-    false
-  else
-    puts score
-    true
+  if player.hand.length >= 2
+    puts "#{player.class} score: #{score}"
+    player.status(score)
+  end
+  if player.class=="Dealer"
+    deal(player)
   end
 end
 
-
-# Player's score is shown before each hit or stand
-
-
-# A hit increases his card value
-
-
-#
 
 
 
@@ -103,3 +96,4 @@ end
 game = Blackjack.new
 game.initial_deal(game.player)
 game.validate(game.player)
+game.initial_deal(game.dealer)
