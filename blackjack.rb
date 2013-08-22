@@ -3,6 +3,7 @@
 
 require './player'
 require './dealer'
+
 class Blackjack
   attr_accessor :player, :deck, :dealer
 
@@ -19,17 +20,14 @@ def build_deck
   end
 
   deck.shuffle
-
 end
 
-#Dealer deals out two random cards to each the player and dealer
 def initialize
   @deck = build_deck
   @player = Player.new
   @dealer = Dealer.new
 end
 
-#  Player gets two random cards and is then able to hit or stand
 def deal(player)
   player.hand << @deck.pop
   puts "#{player.class} was dealt #{player.hand.last}"
@@ -38,7 +36,6 @@ end
 
 def initial_deal(player)
   2.times {deal(player)}
-
 end
 
 def prompt
@@ -49,18 +46,13 @@ end
 def validate(player)
   until (input = prompt.upcase) == "S"
     if input == "H"
-      if !hit(player)
+      if !deal(player)
         break
       end
     else
       puts "invalid input"
     end
   end
-  puts "starndiingasd"
-end
-
-def hit(player)
-  deal(player)
 end
 
 def display_score(player)
@@ -78,17 +70,28 @@ def display_score(player)
       end
     end
   end
+
   if player.hand.length >= 2
     puts "#{player.class} score: #{score}"
     player.status(score)
   end
+
   if player.class=="Dealer"
     deal(player)
   end
 end
+
+def player_turn
+  initial_deal(@player)
+  validate(@player)
+end
+
+def dealer_turn
+  initial_deal(@dealer)
+end
+
 end
 
 game = Blackjack.new
-game.initial_deal(game.player)
-game.validate(game.player)
-game.initial_deal(game.dealer)
+game.player_turn
+game.dealer_turn
