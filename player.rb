@@ -4,9 +4,10 @@ class Player
   def initialize
     @hand = []
   end
+
   def status(score)
     if score > 21
-      puts "You suck at BJs"
+      puts "BUST, LOSER! GIVE ME YOUR MONEY!"
       exit
     else
       true

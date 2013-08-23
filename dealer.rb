@@ -4,12 +4,13 @@ class Dealer
   def initialize
     @hand = []
   end
+
   def status (score)
     if score < 17
-      false
+      true
     else
       puts "Dealer stands."
-      true
-end
-end
+      false
+    end
+  end
 end

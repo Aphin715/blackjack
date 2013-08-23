@@ -31,7 +31,7 @@ end
 def deal(player)
   player.hand << @deck.pop
   puts "#{player.class} was dealt #{player.hand.last}"
-  display_score(player)
+  display_score(player) if player.hand.length >= 2
 end
 
 def initial_deal(player)
@@ -39,16 +39,21 @@ def initial_deal(player)
 end
 
 def prompt
-  print "Hit or stand (H/S)"
-  gets.chomp
+  hit if validate == "H"
 end
 
-def validate(player)
-  until (input = prompt.upcase) == "S"
-    if input == "H"
-      if !deal(player)
-        break
-      end
+def hit
+  deal(@player)
+  prompt
+end
+
+def validate
+  loop do
+    print "Hit or stand (H/S): "
+    input = gets.chomp.upcase
+
+    if input == "H" || input == "S"
+      return input
     else
       puts "invalid input"
     end
@@ -71,19 +76,13 @@ def display_score(player)
     end
   end
 
-  if player.hand.length >= 2
-    puts "#{player.class} score: #{score}"
-    player.status(score)
-  end
-
-  if player.class=="Dealer"
-    deal(player)
-  end
+  puts "#{player.class} score: #{score}"
+  player.status(score)
 end
 
 def player_turn
   initial_deal(@player)
-  validate(@player)
+  prompt
 end
 
 def dealer_turn
