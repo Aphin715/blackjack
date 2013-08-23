@@ -31,12 +31,9 @@ end
 def deal(player)
   player.hand << @deck.pop
   puts "#{player.class} was dealt #{player.hand.last}"
-  display_score(player) if player.hand.length >= 2
+  display_score(player)
 end
 
-def initial_deal(player)
-  2.times {deal(player)}
-end
 
 def prompt
   hit if validate == "H"
@@ -60,7 +57,7 @@ def validate
   end
 end
 
-def display_score(player)
+def calculate_score(player)
   score = 0
   player.hand.each do |card|
     if card.chop == "J" || card.chop == "Q" || card.chop == "K"
@@ -75,22 +72,44 @@ def display_score(player)
       end
     end
   end
+  score
+end
 
-  puts "#{player.class} score: #{score}"
-  player.status(score)
+def display_score(player)
+  score = calculate_score(player)
+
+  if player.hand.length >= 2
+    puts "#{player.class} score: #{score}"
+  end
+    player.status(score)
 end
 
 def player_turn
-  initial_deal(@player)
+  2.times {deal(@player)}
   prompt
 end
 
 def dealer_turn
-  initial_deal(@dealer)
+  loop do
+      break if !deal(@dealer)
+    end
+end
+def winner
+d_score = calculate_score(@dealer)
+p_score = calculate_score(@player)
+
+if p_score > d_score
+  puts "You win"
+elsif p_score == d_score
+  puts "Push"
+else
+  puts "Dealer wins"
+end
+end
 end
 
-end
 
 game = Blackjack.new
 game.player_turn
 game.dealer_turn
+game.winner
