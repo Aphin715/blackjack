@@ -60,20 +60,23 @@ end
 
 def calculate_score(player)
   score = 0
+  aces = 0
+
   player.hand.each do |card|
     if ["J", "Q", "K"].include?card.chop
       score += 10
     elsif card.chop != "A"
       score += card.chop.to_i
     else
-      if score < 11
-        score += 11
-      else
-        score += 1
-      end
+      aces += 1
     end
   end
-  score
+
+  if score + (aces - 1) <= 10 && aces > 0
+    score += 11
+    aces -= 1
+  end
+  score += aces
 end
 
 def display_score(player)
