@@ -1,3 +1,5 @@
+require './card'
+
 class Deck
   SUITS = ['♠', '♣', '♥', '♦']
   VALUES = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
@@ -7,11 +9,11 @@ class Deck
 
     SUITS.each do |suit|
       VALUES.each do |value|
-        @deck.push(value + suit)
+        @deck.push(Card.new(value, suit))
       end
     end
 
-    @deck.shuffle
+    @deck.shuffle!
   end
 
   def pop

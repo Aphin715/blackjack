@@ -14,34 +14,51 @@ def initialize
   @dealer = Hand.new('Dealer')
 end
 
-def deal(player)
-  player.hand << @deck.pop
-  puts "#{ player.name } was dealt #{player.hand.last}"
-  display_score(player)
+def start
+  player_turn
+  dealer_turn
 end
 
-# def prompt
-#   hit if validate == "H"
-# end
+def player_turn
+  2.times { deal(@player) }
+  prompt
+end
 
-# def hit
-#   deal(@player)
-#   prompt
-# end
+def dealer_turn
+  loop do
+      break if !deal(@dealer)
+    end
+end
 
-# def validate
-#   loop do
-#     print "Hit or stand (H/S): "
-#     input = gets.chomp.upcase
-#     puts "\n"
+def deal(player)
+  player.cards << @deck.pop
+  puts "#{ player.name } was dealt #{ player.cards.last.value }#{ player.cards.last.suit }"
+end
 
-#     if input == "H" || input == "S"
-#       return input
-#     else
-#       puts "invalid input"
-#     end
-#   end
-# end
+def prompt
+  hit if validate == "H"
+end
+
+def validate
+  loop do
+    print "Hit or stand (H/S): "
+    input = gets.chomp.upcase
+    puts "\n"
+
+    if input == "H" || input == "S"
+      return input
+    else
+      puts "invalid input"
+    end
+  end
+end
+
+def hit
+  deal(@player)
+  prompt
+end
+
+
 
 # def calculate_score(player)
 #   score = 0
@@ -73,16 +90,7 @@ end
 #     player.status(score)
 # end
 
-# def player_turn
-#   2.times {deal(@player)}
-#   prompt
-# end
 
-# def dealer_turn
-#   loop do
-#       break if !deal(@dealer)
-#     end
-# end
 
 # def winner
 #   d_score = calculate_score(@dealer)
@@ -97,11 +105,7 @@ end
 #   end
 # end
 
-# def start
-#   player_turn
-#   dealer_turn
-#   winner
-# end
+
 
 end
 
