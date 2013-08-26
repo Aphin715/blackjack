@@ -2,110 +2,75 @@
 # encoding: UTF-8
 
 require './deck'
-require './card'
 require './hand'
 
 class Blackjack
 
-def initialize
-  puts "Welcome to Blackjack!\n\n"
-  @deck = Deck.new
-  @player = Hand.new('Player')
-  @dealer = Hand.new('Dealer')
-end
+  def initialize
+    puts "Welcome to Blackjack!\n\n"
+    @deck = Deck.new
+    @player = Hand.new('Player')
+    @dealer = Hand.new('Dealer')
+  end
 
-def start
-  player_turn
-  dealer_turn
-end
+  def start
+    player_turn
+    dealer_turn
+    winner
+  end
 
-def player_turn
-  2.times { deal(@player) }
-  prompt
-end
+  def player_turn
+    2.times { deal(@player) }
+    prompt
+  end
 
-def dealer_turn
-  loop do
-      break if !deal(@dealer)
-    end
-end
+  def dealer_turn
+    loop do
+        deal(@dealer)
+        break if @dealer.score >= 17
+      end
+  end
 
-def deal(player)
-  player.cards << @deck.pop
-  puts "#{ player.name } was dealt #{ player.cards.last.value }#{ player.cards.last.suit }"
-end
+  def deal(player)
+    player.cards << @deck.pop
+    puts "#{ player.name } was dealt #{ player.cards.last.value }#{ player.cards.last.suit }"
+    puts "#{ player.name } score: #{ player.score }\n\n" if player.cards.length >= 2
 
-def prompt
-  hit if validate == "H"
-end
+    player.lose if player.busted?
+  end
 
-def validate
-  loop do
-    print "Hit or stand (H/S): "
-    input = gets.chomp.upcase
-    puts "\n"
+  def prompt
+    hit if validate == "H"
+  end
 
-    if input == "H" || input == "S"
-      return input
-    else
-      puts "invalid input"
+  def validate
+    loop do
+      print "Hit or stand (H/S): "
+      input = gets.chomp.upcase
+      puts "\n"
+
+      if input == "H" || input == "S"
+        return input
+      else
+        puts "invalid input"
+      end
     end
   end
-end
 
-def hit
-  deal(@player)
-  prompt
-end
+  def hit
+    deal(@player)
+    prompt
+  end
 
-
-
-# def calculate_score(player)
-#   score = 0
-#   aces = 0
-
-#   player.hand.each do |card|
-#     if ["J", "Q", "K"].include?card.chop
-#       score += 10
-#     elsif card.chop != "A"
-#       score += card.chop.to_i
-#     else
-#       aces += 1
-#     end
-#   end
-
-#   if score + (aces - 1) <= 10 && aces > 0
-#     score += 11
-#     aces -= 1
-#   end
-#   score += aces
-# end
-
-# def display_score(player)
-#   score = calculate_score(player)
-
-#   if player.hand.length >= 2
-#     puts "#{player.class} score: #{score}\n\n"
-#   end
-#     player.status(score)
-# end
-
-
-
-# def winner
-#   d_score = calculate_score(@dealer)
-#   p_score = calculate_score(@player)
-
-#   if p_score > d_score
-#     puts "\nYou win!"
-#   elsif p_score == d_score
-#     puts "\nTie!"
-#   else
-#     puts "\nDealer wins!"
-#   end
-# end
-
-
+  def winner
+    if @player.score > @dealer.score
+      puts 'You win!'
+    elsif @player.score == @dealer.score
+      puts 'Tie!'
+    else
+      puts 'Dealer wins!'
+    end
+  end
 
 end
 
